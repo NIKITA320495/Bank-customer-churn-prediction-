@@ -121,7 +121,6 @@ The model's performance is evaluated by Accuracy score and then Auc curves are p
 ### AUC Curve for Gradient Boosting Algorithm
 ![AUC Curve for Gradient Boosting Algorithm](images/output-gb.png)
 *   Description: This graph demonstrates the Area Under the Curve (AUC) for the Gradient Boosting algorithm.*
-## Contributors
-- [Nikita](https://github.com/NIKITA320495) - Contributor
+
 
 
