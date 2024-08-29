@@ -1,16 +1,22 @@
+import os
 import streamlit as st
 import joblib
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from pathlib import Path
+
+# Define paths using environment variables
+model_path = Path(os.getenv('MODEL_PATH', '../Model/model.pkl'))
+data_path = Path(os.getenv('DATA_PATH', '../Dataset/Customer.csv'))
 
 # Streamlit app title
-st.title('Bank customer churn prediction app')
+st.title('Bank Customer Churn Prediction App')
 
 # Load the model
 def load_model():
     try:
-        model = joblib.load(r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Model\model.pkl')
+        model = joblib.load(model_path)
         return model
     except Exception as e:
         st.write(f"Error loading the model: {e}")
@@ -25,13 +31,16 @@ else:
 
 # Initialize scalers
 minmax_scaler = MinMaxScaler()
-Standard_Scaler=StandardScaler()
-# Load training data
-training_data = pd.read_csv(r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Dataset\Customer.csv') 
+Standard_Scaler = StandardScaler()
 
-# Fit the scaler on training data
-minmax_scaler.fit(training_data[['Tenure', 'NumOfProducts']])
-Standard_Scaler.fit(training_data[['CreditScore', 'Balance'  ]])
+# Load training data
+try:
+    training_data = pd.read_csv(data_path)
+    # Fit the scaler on training data
+    minmax_scaler.fit(training_data[['Tenure', 'NumOfProducts']])
+    Standard_Scaler.fit(training_data[['CreditScore', 'Balance']])
+except Exception as e:
+    st.write(f"Error loading or processing the training data: {e}")
 
 def preprocess_input(data):
     # Copy the input data to avoid modifying the original data
@@ -50,16 +59,15 @@ def preprocess_input(data):
         
     return processed_data
 
-
 def make_prediction(model, data):
     # Preprocess input data
     processed_data = preprocess_input(data)
     
     # Assuming 'data' is a dictionary containing the input features
     input_data = pd.DataFrame(processed_data, index=[0])
-    print("Input Data:", input_data)  # Debug statement
+    st.write("Input Data:", input_data)  # Debug statement
     prediction = model.predict(input_data)
-    print("Prediction:", prediction)  # Debug statement
+    st.write("Prediction:", prediction)  # Debug statement
     return prediction
 
 def main():
@@ -85,7 +93,7 @@ def main():
     # Make prediction on new data
     prediction = make_prediction(model, new_data)
     st.write("Predicted Class:", prediction)
-    if prediction==1:
+    if prediction == 1:
         st.write("The customer is likely to leave the bank.")
     else:
         st.write("The customer is likely to stay with the bank.")
