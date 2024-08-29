@@ -8,3 +8,4 @@ imblearn
 pickle
 streamlit
 joblib
+pip install --upgrade pip
