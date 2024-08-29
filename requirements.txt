@@ -1,10 +1,9 @@
-numpy 
+numpy
 pandas
 matplotlib
-seaborn 
+seaborn
 plotly
-sklearn
+scikit-learn
 imblearn
-pickle
-streamlit
 joblib
+streamlit
