@@ -7,8 +7,8 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from pathlib import Path
 
 # Define paths using environment variables
-model_path = Path(os.getenv('MODEL_PATH', '../Model/model.pkl'))
-data_path = Path(os.getenv('DATA_PATH', '../Dataset/Customer.csv'))
+model_path = Path(os.getenv('MODEL_PATH', r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Model\model.pkl'))
+data_path = Path(os.getenv('DATA_PATH', r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Dataset\Customer.csv'))
 
 # Streamlit app title
 st.title('Bank Customer Churn Prediction App')
