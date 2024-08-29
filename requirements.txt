@@ -7,5 +7,5 @@ sklearn
 imblearn
 pickle
 streamlit
-joblib
-pip 
+joblib--1.2.0
+pip
