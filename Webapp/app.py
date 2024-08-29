@@ -27,7 +27,7 @@ else:
 minmax_scaler = MinMaxScaler()
 Standard_Scaler=StandardScaler()
 # Load training data
-training_data = pd.read_csv(r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Dataset\Customer.csv') 
+training_data = pd.read_csv(r'C:\\Users\\Nikita\\Desktop\\ml projects\\Bank-customer-churn-prediction--1\\Dataset\Customer.csv') 
 
 # Fit the scaler on training data
 minmax_scaler.fit(training_data[['Tenure', 'NumOfProducts']])
