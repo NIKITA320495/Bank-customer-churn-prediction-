@@ -10,7 +10,7 @@ st.title('Bank customer churn prediction app')
 # Load the model
 def load_model():
     try:
-        model = joblib.load('../Model/model.pkl')
+        model = joblib.load(r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Model\model.pkl')
         return model
     except Exception as e:
         st.write(f"Error loading the model: {e}")
