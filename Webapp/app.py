@@ -7,8 +7,8 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from pathlib import Path
 
 # Define paths using environment variables
-model_path = Path(os.getenv('MODEL_PATH', r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Model\model.pkl'))
-data_path = Path(os.getenv('DATA_PATH', r'C:\Users\Nikita\Desktop\ml projects\Bank-customer-churn-prediction--1\Dataset\Customer.csv'))
+model_path = Path(os.getenv('MODEL_PATH', '../Model/model.pkl'))
+data_path = Path(os.getenv('DATA_PATH', '../Dataset/Customer.csv'))
 
 # Streamlit app title
 st.title('Bank Customer Churn Prediction App')
@@ -34,45 +34,34 @@ minmax_scaler = MinMaxScaler()
 Standard_Scaler = StandardScaler()
 
 # Load training data
-def load_and_fit_scalers():
-    try:
-        training_data = pd.read_csv(data_path)
-        minmax_scaler.fit(training_data[['Tenure', 'NumOfProducts']])
-        Standard_Scaler.fit(training_data[['CreditScore', 'Balance']])
-        return True
-    except Exception as e:
-        st.write(f"Error loading or processing the training data: {e}")
-        return False
-
-scalers_fitted = load_and_fit_scalers()
+try:
+    training_data = pd.read_csv(data_path)
+    # Fit the scaler on training data
+    minmax_scaler.fit(training_data[['Tenure', 'NumOfProducts']])
+    Standard_Scaler.fit(training_data[['CreditScore', 'Balance']])
+except Exception as e:
+    st.write(f"Error loading or processing the training data: {e}")
 
 def preprocess_input(data):
-    if not scalers_fitted:
-        st.write("Scalers are not fitted.")
-        return data
-    
     # Copy the input data to avoid modifying the original data
     processed_data = data.copy()
-    
-    # Scaling
     CreditScore_scaled = Standard_Scaler.transform([[processed_data['CreditScore'], 0]])[0][0]
     processed_data['CreditScore'] = CreditScore_scaled
+    # Convert Gender to numerical value
     processed_data['Gender'] = 1 if processed_data['Gender'] == 'Male' else 0
+    # MinMax scaling
     tenure_scaled = minmax_scaler.transform([[processed_data['Tenure'], 0]])[0][0]
     processed_data['Tenure'] = tenure_scaled
     Balance_scaled = Standard_Scaler.transform([[processed_data['Balance'], 0]])[0][0]
     processed_data['Balance'] = Balance_scaled
     num_of_products_scaled = minmax_scaler.transform([[processed_data['NumOfProducts'], 0]])[0][0]
     processed_data['NumOfProducts'] = num_of_products_scaled
-    
+        
     return processed_data
 
 def make_prediction(model, data):
     # Preprocess input data
     processed_data = preprocess_input(data)
-    
-    if not scalers_fitted:
-        return "Scalers not fitted."
     
     # Assuming 'data' is a dictionary containing the input features
     input_data = pd.DataFrame(processed_data, index=[0])
